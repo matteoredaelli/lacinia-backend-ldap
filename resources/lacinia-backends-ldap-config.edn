@@ -1,0 +1,7 @@
+{:host [{:address "ldap.example" :port 636}]
+ :ssl? true
+ ;;:startTLS? true
+ :initial-connections 2
+ :max-connections 2
+ :bind-dn "CN=Matteo,DC=group,DC=example,DC=com"
+ :password "MySillyPwd"}
