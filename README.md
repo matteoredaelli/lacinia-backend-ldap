@@ -6,21 +6,23 @@ LDAP / Active directory backend library for lacinia
 
 export LACINIA_BACKENDS_LDAP_CONFIG=/path/to/resource/lacinia-backends-ldap-config.edn
 
-Run the project's tests (they'll fail until you edit them):
-
-    $ clojure -A:test:runner -M:runner
 
 Build a deployable jar of this library:
 
-    $ clojure -A:jar -M:jar
+	$ clojure -A:jar -M:jar
+	$ clojure -A:uberjar -M:uberjar  ;; (it will include lib dependencies
 
 Install it locally:
 
-    $ clojure -A:install -M:install
+	$ clojure -A:install -M:install
 
 Deploy it to Clojars -- needs `CLOJARS_USERNAME` and `CLOJARS_PASSWORD` environment variables:
 
-    $ clojure -A:deploy -M:deploy
+	$ clojure -A:deploy -M:deploy
+
+## ROADMAP
+
+- [ ] support for multiple LDAP servers
 
 ## License
 
