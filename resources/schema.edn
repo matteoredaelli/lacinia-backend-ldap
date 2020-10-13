@@ -1,35 +1,35 @@
 {
- :objects {:ldap_object {
-                         :fields {:dn {:type String}
-                                  :c {:type String}
-                                  :cn {:type String}
-                                  :directReports {:type String}
-                                  :displayName {:type String}
-                                  :givenName {:type String}
-                                  :l {:type String}
-                                  :lastLogon {:type String}
-                                  :mail {:type String}
-                                  :manager {:type String}
-                                  :managerObject {:type :ldap_object
-                                                  :resolve :resolve-ldap-field-manager-object}
-                                  :mobile {:type String}
-                                  :name {:type String}
-                                  :memberOf {:type (list String)}
-                                  :member {:type (list String)}
-                                  :memberObjects {:type (list :ldap_object)
-                                                  :resolve :resolve-ldap-field-member-objects}
-                                  :objectClass {:type (list String)}
-                                  :pwdLastSet {:type String}
-                                  :sAMAccountName {:type String}
-                                  :sn {:type String}
-                                  :telephoneNumber {:type String}
-                                  :whenChanged {:type String}
-                                  :whenCreated {:type String}
-                                  }}}
+ :objects {:LdapObject {
+                        :fields {:dn {:type String}
+                                 :c {:type String}
+                                 :cn {:type String}
+                                 :directReports {:type String}
+                                 :displayName {:type String}
+                                 :givenName {:type String}
+                                 :l {:type String}
+                                 :lastLogon {:type String}
+                                 :mail {:type String}
+                                 :manager {:type String}
+                                 :managerObject {:type :LdapObject
+                                                 :resolve :LdapObject/manager-object}
+                                 :mobile {:type String}
+                                 :name {:type String}
+                                 :memberOf {:type (list String)}
+                                 :member {:type (list String)}
+                                 :memberObjects {:type (list :LdapObject)
+                                                 :resolve :LdapObject/member-objects}
+                                 :objectClass {:type (list String)}
+                                 :pwdLastSet {:type String}
+                                 :sAMAccountName {:type String}
+                                 :sn {:type String}
+                                 :telephoneNumber {:type String}
+                                 :whenChanged {:type String}
+                                 :whenCreated {:type String}
+                                 }}}
 
- :queries {:ldap_objects {:type (list :ldap_object)
+ :queries {:ldap_objects {:type (list :LdapObject)
                           :args {:searchdn {:type String}
                                  :filter {:type String}}
-                          :resolve :resolve-query-ldap-objects}
+                          :resolve :query/ldap-objects}
            }
  }

@@ -4,7 +4,7 @@ LDAP / Active directory backend library for lacinia
 
 ## Usage
 
-export LACINIA_BACKENDS_LDAP_CONFIG=/path/to/resource/lacinia-backends-ldap-config.edn
+export LACINIA_BACKEND_LDAP_CONFIG=/path/to/resource/lacinia-backend-ldap-config.edn
 
 
 Build a deployable jar of this library:
