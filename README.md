@@ -4,8 +4,18 @@ LDAP / Active directory backend library for lacinia
 
 ## Usage
 
-export LACINIA_BACKEND_LDAP_CONFIG=/path/to/resource/lacinia-backend-ldap-config.edn
+Create a configuration file and set the environment
 
+	export LACINIA_BACKEND_LDAP_CONFIG=/path/to/resource/lacinia-backend-ldap-config.edn
+
+
+Add this library to your project: see https://clojars.org/matteoredaelli/lacinia-backend-ldap
+
+## Sources
+
+Run the project directly:
+
+	$ clojure -m matteoredaelli.lacinia-backend-ldap
 
 Build a deployable jar of this library:
 
