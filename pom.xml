@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>matteoredaelli</groupId>
   <artifactId>lacinia-backend-ldap</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.3.0-SNAPSHOT</version>
   <name>lacinia-backend-ldap</name>
-  <description>FIXME: my new library.</description>
+  <description>A graphQl endpoint for querying an LDAP / Active Directory</description>
   <url>https://github.com/matteoredaelli/lacinia-backend-ldap</url>
   <licenses>
     <license>
@@ -15,7 +15,7 @@
   </licenses>
   <developers>
     <developer>
-      <name>Matteo</name>
+      <name>Matteo Redaelli</name>
     </developer>
   </developers>
   <scm>
