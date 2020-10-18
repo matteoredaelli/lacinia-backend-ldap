@@ -1,4 +1,5 @@
 (ns matteoredaelli.lacinia-backend-ldap.schema
+  (:import java.net.InetAddress java.net.Inet4Address java.net.Inet6Address)
   (:require
     [clojure.edn :as edn]
     [clojure.java.io :as io]
@@ -7,6 +8,11 @@
     [com.walmartlabs.lacinia.resolve :as resolve]
     [com.stuartsierra.component :as component]
     [matteoredaelli.lacinia-backend-ldap.backend :as backend]))
+
+(defn get-ip-addresses
+  [host]
+  (let [addresses (InetAddress/getAllByName host)]
+    (map #(.getHostAddress %) addresses)))
 
 (defn filedate-to-unixtime
   [filedate]
@@ -23,11 +29,17 @@
         ]
     (- now before)))
 
+(defn ldap-ip-addresses
+  [backend]
+  (fn [context arguments value]
+    (if (:dNSHostName value)
+      (get-ip-addresses (:dNSHostName value))
+      [])))
 
 (defn ldap-object-locked
   [backend]
   (fn [context arguments value]
-    (if  (:lockoutTime value)
+    (if (:lockoutTime value)
       (>= (Long. (:lockoutTime value)) 1)
       false)))
 
@@ -81,6 +93,7 @@
   (let [backend (:backend component)]
     {
      :LdapObject/locked (ldap-object-locked backend)
+     :LdapObject/ip-addresses (ldap-ip-addresses backend)
      :LdapObject/pwd-last-set-days (ldap-object-pwd-last-set-days backend)
      :LdapObject/pwd-last-set-date (ldap-object-pwd-last-set-date backend)
      :LdapObject/member-objects (ldap-object-member-objects backend)

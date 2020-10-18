@@ -10,6 +10,7 @@
                                  :displayName {:type String}
                                  :dNSHostName {:type String}
                                  :givenName {:type String}
+                                 :ipAddresses  {:type (list String) :resolve :LdapObject/ip-addresses}
                                  :l {:type String}
                                  :lastLogon {:type String}
                                  :lastLogonTimestamp {:type String}
