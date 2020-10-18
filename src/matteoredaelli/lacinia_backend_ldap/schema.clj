@@ -27,7 +27,10 @@
 (defn ldap-object-locked
   [backend]
   (fn [context arguments value]
-    (>= (Long. (:lockoutTime value)) 1)))
+    (if  (:lockoutTime value)
+      (>= (Long. (:lockoutTime value)) 1)
+      false)))
+
 
 (defn ldap-object-pwd-last-set-days
   [backend]
