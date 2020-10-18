@@ -8,6 +8,20 @@
     [com.stuartsierra.component :as component]
     [matteoredaelli.lacinia-backend-ldap.backend :as backend]))
 
+(defn filedate-seconds-to-date
+  [seconds]
+  (java.util.Date. (* (+ -11644473590 (quot (Long. seconds) 10000000)) 1000)))
+
+(defn ldap-object-locked
+  [backend]
+  (fn [context arguments value]
+    (>= (Long. (:lockoutTime value)) 1)))
+
+(defn ldap-object-pwd-last-set-date
+  [backend]
+  (fn [context arguments value]
+    (java.util.Date. (* (+ -11644473590 (quot (Long. (:pwdLastSet value)) 10000000)) 1000))))
+
 (defn ldap-object-manager-object
   [backend]
   (fn [context arguments value]
@@ -44,6 +58,8 @@
   [component]
   (let [backend (:backend component)]
     {
+     :LdapObject/locked (ldap-object-locked backend)
+     :LdapObject/pwd-last-set-date (ldap-object-pwd-last-set-date backend)
      :LdapObject/member-objects (ldap-object-member-objects backend)
      :LdapObject/manager-object (ldap-object-manager-object backend)
      :query/ldap-objects (query-ldap-objects backend)

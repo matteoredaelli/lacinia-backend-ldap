@@ -1,7 +1,8 @@
 (ns matteoredaelli.lacinia-backend-ldap
   (:require [matteoredaelli.lacinia-backend-ldap.system :as system]
             [com.stuartsierra.component :as component]
-            ))
+            )
+   (:gen-class))
 
 (defn ^:private my-system
   "Creates a new system suitable for testing, and ensures that

@@ -8,6 +8,8 @@
                                  :givenName {:type String}
                                  :l {:type String}
                                  :lastLogon {:type String}
+                                 :lockoutTime {:type String}
+                                 :locked {:type Boolean :resolve :LdapObject/locked}
                                  :mail {:type String}
                                  :manager {:type String}
                                  :managerObject {:type :LdapObject
@@ -19,7 +21,9 @@
                                  :memberObjects {:type (list :LdapObject)
                                                  :resolve :LdapObject/member-objects}
                                  :objectClass {:type (list String)}
+                                 :objectSid {:type String}
                                  :pwdLastSet {:type String}
+                                 :pwdLastSetDate {:type String :resolve :LdapObject/pwd-last-set-date}
                                  :sAMAccountName {:type String}
                                  :sn {:type String}
                                  :telephoneNumber {:type String}
