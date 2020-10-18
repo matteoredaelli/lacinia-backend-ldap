@@ -102,11 +102,16 @@
      }
     ))
 
-(defn load-schema
+(defn get-schema
   [component]
   (-> (io/resource "schema.edn")
       slurp
-      edn/read-string
+      edn/read-string))
+
+(defn load-schema
+  [component]
+
+  (-> (get-schema component)
       (util/attach-resolvers (resolver-map component))
       schema/compile))
 
