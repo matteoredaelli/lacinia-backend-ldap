@@ -23,6 +23,7 @@
                                  :objectClass {:type (list String)}
                                  :objectSid {:type String}
                                  :pwdLastSet {:type String}
+                                 :pwdLastSetDays {:type Int :resolve :LdapObject/pwd-last-set-days}
                                  :pwdLastSetDate {:type String :resolve :LdapObject/pwd-last-set-date}
                                  :sAMAccountName {:type String}
                                  :sn {:type String}
