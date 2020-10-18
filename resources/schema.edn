@@ -1,15 +1,21 @@
 {
  :objects {:LdapObject {
                         :fields {:dn {:type String}
+                                 :accountExpires {:type String}
                                  :c {:type String}
                                  :cn {:type String}
+                                 :co {:type String}
+                                 :company {:type String}
                                  :directReports {:type String}
                                  :displayName {:type String}
+                                 :dNSHostName {:type String}
                                  :givenName {:type String}
                                  :l {:type String}
                                  :lastLogon {:type String}
+                                 :lastLogonTimestamp {:type String}
                                  :lockoutTime {:type String}
                                  :locked {:type Boolean :resolve :LdapObject/locked}
+                                 :logonCount {:type Int}
                                  :mail {:type String}
                                  :manager {:type String}
                                  :managerObject {:type :LdapObject
@@ -20,13 +26,18 @@
                                  :member {:type (list String)}
                                  :memberObjects {:type (list :LdapObject)
                                                  :resolve :LdapObject/member-objects}
+                                 :objectCategory {:type String}
                                  :objectClass {:type (list String)}
                                  :objectSid {:type String}
+                                 :operatingSystem {:type String}
+                                 :operatingSystemVersion {:type String}
                                  :pwdLastSet {:type String}
                                  :pwdLastSetDays {:type Int :resolve :LdapObject/pwd-last-set-days}
                                  :pwdLastSetDate {:type String :resolve :LdapObject/pwd-last-set-date}
                                  :sAMAccountName {:type String}
+                                 :sAMAccountType {:type String}
                                  :sn {:type String}
+                                 :streetAddress {:type String}
                                  :telephoneNumber {:type String}
                                  :whenChanged {:type String}
                                  :whenCreated {:type String}
