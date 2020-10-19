@@ -32,7 +32,7 @@ Deploy it to Clojars -- needs `CLOJARS_USERNAME` and `CLOJARS_PASSWORD` environm
 
 ## ROADMAP
 
-- [ ] support for multiple LDAP servers
+- [X] support for multiple LDAP servers
 
 ## License
 

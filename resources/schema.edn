@@ -6,7 +6,9 @@
                                  :cn {:type String}
                                  :co {:type String}
                                  :company {:type String}
-                                 :directReports {:type String}
+                                 :directReports {:type (list String)}
+                                 :directReportsObjects {:type (list :LdapObject)
+                                                        :resolve :LdapObject/direct-reports-objects}
                                  :displayName {:type String}
                                  :dNSHostName {:type String}
                                  :givenName {:type String}
@@ -23,10 +25,12 @@
                                                  :resolve :LdapObject/manager-object}
                                  :mobile {:type String}
                                  :name {:type String}
-                                 :memberOf {:type (list String)}
                                  :member {:type (list String)}
                                  :memberObjects {:type (list :LdapObject)
                                                  :resolve :LdapObject/member-objects}
+                                 :memberOf {:type (list String)}
+                                 :memberOfObjects {:type (list :LdapObject)
+                                                   :resolve :LdapObject/member-of-objects}
                                  :objectCategory {:type String}
                                  :objectClass {:type (list String)}
                                  :objectSid {:type String}
@@ -45,7 +49,8 @@
                                  }}}
 
  :queries {:ldap_objects {:type (list :LdapObject)
-                          :args {:searchdn {:type String}
+                          :args {:system {:type String}
+                                 :searchdn {:type String}
                                  :filter {:type String}}
                           :resolve :query/ldap-objects}
            }

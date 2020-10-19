@@ -16,16 +16,27 @@
    slurp
    edn/read-string))
 
+(defn ldap-connect
+  [system-info]
+  (log/info :info "connecting to ldap"
+             :system-info system-info)
+  (ldap/connect system-info))
+
 (defrecord LdapBackend [ds]
 
   component/Lifecycle
 
   (start [this]
     (assoc this
-           :ds (ldap/connect (pooled-data-source))))
+           :ds (into {}
+                     (map (fn [[system system-info]] {system
+                                                      (ldap-connect system-info)})
+                          (:systems (pooled-data-source))))
+           ))
 
   (stop [this]
-    (ldap/release-connection (pooled-data-source) :ds)
+    ;; TODO
+    ;;(ldap/release-connection (pooled-data-source) :ds)
     (assoc this :ds nil)))
 
 (defn new-backend
@@ -33,22 +44,34 @@
   {:backend (map->LdapBackend {})})
 
 
+
+
+(defn get-system-ds
+  [component system]
+  (get-in component
+          [:ds (keyword system)]))
+
 (defn search-objects
-  [component filter searchdn]
+  [component system filter searchdn]
   (log/debug :component component
-             :filter  filter
-             :searchdn searchdn)
-  (ldap/search (:ds component)
+             :filter    filter
+             :system    system
+             :searchdn  searchdn)
+  (ldap/search (get-system-ds component system)
                searchdn
                {:filter filter})
   )
 
 (defn get-object-by-dn
-  [component dn]
-  (ldap/get (:ds component) dn))
+  [component system dn]
+  (log/debug :component component
+             :system    system
+             :dn  dn)
+  (ldap/get (get-system-ds component system)
+            dn))
 
 (defn get-objects-by-dn
-  [component dn-list]
-  (map #(get-object-by-dn component %)
+  [component system dn-list]
+  (map #(get-object-by-dn component system %)
        dn-list
        ))

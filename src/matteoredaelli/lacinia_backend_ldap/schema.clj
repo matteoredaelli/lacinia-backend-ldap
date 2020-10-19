@@ -31,61 +31,79 @@
 
 (defn ldap-ip-addresses
   [backend]
-  (fn [context arguments value]
+  (fn [context args value]
     (if (:dNSHostName value)
       (get-ip-addresses (:dNSHostName value))
       [])))
 
 (defn ldap-object-locked
   [backend]
-  (fn [context arguments value]
+  (fn [_context _args value]
     (if (:lockoutTime value)
       (>= (Long. (:lockoutTime value)) 1)
       false)))
 
-
 (defn ldap-object-pwd-last-set-days
   [backend]
-  (fn [context arguments value]
+  (fn [_context _args value]
     (quot (filedate-diff-from-now-in-seconds (:pwdLastSet value)) 86400000)))
 
 (defn ldap-object-pwd-last-set-date
   [backend]
-  (fn [context arguments value]
+  (fn [_context _args value]
     (filedate-to-date  (:pwdLastSet value))
    ;; (java.util.Date. (* (+ -11644473590 (quot (Long. (:pwdLastSet value)) 10000000)) 1000)))
     ))
 
+(defn ldap-object-direct-reports-objects
+  [backend]
+  (fn [context _args value]
+    (let [
+          {:keys [::system]} context]
+      (backend/get-objects-by-dn backend
+                                 system
+                                 (:directReports value)))))
+
 (defn ldap-object-manager-object
   [backend]
-  (fn [context arguments value]
+  (fn [context _args value]
     (let [
-          {:keys [searchdn filter]} arguments]
+          {:keys [::system ]} context]
       (backend/get-object-by-dn backend
+                                system
                                 (:manager value)
                                 ))))
 
 (defn ldap-object-member-objects
   [backend]
-  (fn [context arguments value]
+  (fn [context _args value]
     (let [
-          {:keys [searchdn filter]} arguments]
+          {:keys [::system]} context]
       (backend/get-objects-by-dn backend
+                                 system
                                  (:member value)))))
 
+(defn ldap-object-member-of-objects
+  [backend]
+  (fn [context _args value]
+    (let [
+          {:keys [::system]} context]
+      (backend/get-objects-by-dn backend
+                                 system
+                                 (:memberOf value)))))
 (defn query-ldap-objects
   [backend]
-  (fn [context arguments value]
+  (fn [context args value]
     (let [
-          {:keys [searchdn filter]} arguments]
-
-      ;;     (->
-      (backend/search-objects backend
-                              filter
-                              searchdn)
+          {:keys [system searchdn filter]} args]
+      (->
+       (backend/search-objects backend
+                               system
+                               filter
+                               searchdn)
        ;; https://lacinia.readthedocs.io/en/latest/resolve/context.html
-       ;;(resolve/with-context {::searchdn searchdn})
-    ;   )
+       (resolve/with-context {::system system}))
+
     )))
 
 (defn resolver-map
@@ -93,10 +111,12 @@
   (let [backend (:backend component)]
     {
      :LdapObject/locked (ldap-object-locked backend)
+     :LdapObject/direct-reports-objects (ldap-object-direct-reports-objects backend)
      :LdapObject/ip-addresses (ldap-ip-addresses backend)
      :LdapObject/pwd-last-set-days (ldap-object-pwd-last-set-days backend)
      :LdapObject/pwd-last-set-date (ldap-object-pwd-last-set-date backend)
      :LdapObject/member-objects (ldap-object-member-objects backend)
+     :LdapObject/member-of-objects (ldap-object-member-of-objects backend)
      :LdapObject/manager-object (ldap-object-manager-object backend)
      :query/ldap-objects (query-ldap-objects backend)
      }
