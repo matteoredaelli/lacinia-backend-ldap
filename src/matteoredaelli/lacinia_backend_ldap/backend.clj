@@ -19,7 +19,7 @@
 (defn ldap-connect
   [system-info]
   (log/info :info "connecting to ldap"
-             :system-info system-info)
+            :system-info system-info)
   (ldap/connect system-info))
 
 (defrecord LdapBackend [ds]
@@ -41,7 +41,7 @@
 
 (defn new-backend
   []
-  {:backend (map->LdapBackend {})})
+  {:ldap-backend (map->LdapBackend {})})
 
 
 

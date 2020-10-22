@@ -9,7 +9,7 @@
   the HTTP port won't conflict with a default running system."
   []
   (-> (system/new-system)
-      (assoc-in [:server :port] 8889)))
+      (assoc-in [:ldap-server :port] 8801)))
 
 (def ^:dynamic ^:private *system*)
 

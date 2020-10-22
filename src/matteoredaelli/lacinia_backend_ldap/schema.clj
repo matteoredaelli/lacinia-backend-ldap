@@ -108,7 +108,7 @@
 
 (defn resolver-map
   [component]
-  (let [backend (:backend component)]
+  (let [backend (:ldap-backend component)]
     {
      :LdapObject/locked (ldap-object-locked backend)
      :LdapObject/direct-reports-objects (ldap-object-direct-reports-objects backend)
@@ -124,7 +124,7 @@
 
 (defn get-schema
   [component]
-  (-> (io/resource "schema.edn")
+  (-> (io/resource "ldap-schema.edn")
       slurp
       edn/read-string))
 
@@ -141,13 +141,13 @@
   component/Lifecycle
 
   (start [this]
-    (assoc this :schema (load-schema this)))
+    (assoc this :ldap-schema (get-schema this)))
 
   (stop [this]
-    (assoc this :schema nil)))
+    (assoc this :ldap-schema nil)))
 
 (defn new-schema-provider
   []
   {:schema-provider (-> {}
                         map->SchemaProvider
-                        (component/using [:backend]))})
+                        (component/using [:ldap-backend]))})
