@@ -141,7 +141,7 @@
   component/Lifecycle
 
   (start [this]
-    (assoc this :ldap-schema (get-schema this)))
+    (assoc this :ldap-schema (load-schema this)))
 
   (stop [this]
     (assoc this :ldap-schema nil)))
