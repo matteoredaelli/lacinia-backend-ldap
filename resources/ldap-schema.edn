@@ -1,5 +1,5 @@
 {
- :objects {:LdapObject {
+ :objects {:LdapObject {:description "LDAP object: can be an user, group, computer,.."
                         :fields {:dn {:type String}
                                  :accountExpires {:type String}
                                  :c {:type String}
@@ -8,11 +8,13 @@
                                  :company {:type String}
                                  :directReports {:type (list String)}
                                  :directReportsObjects {:type (list :LdapObject)
-                                                        :resolve :LdapObject/direct-reports-objects}
+                                                        :resolve :LdapObject/direct-reports-objects
+                                                        :description "LDAP objects of the members of the directReports"}
                                  :displayName {:type String}
                                  :dNSHostName {:type String}
                                  :givenName {:type String}
-                                 :ipAddresses  {:type (list String) :resolve :LdapObject/ip-addresses}
+                                 :ipAddresses  {:type (list String) :resolve :LdapObject/ip-addresses
+                                                :description "IP Addresses of the dNSHostName"}
                                  :l {:type String}
                                  :lastLogon {:type String}
                                  :lastLogonTimestamp {:type String}
@@ -22,23 +24,35 @@
                                  :mail {:type String}
                                  :manager {:type String}
                                  :managerObject {:type :LdapObject
-                                                 :resolve :LdapObject/manager-object}
+                                                 :resolve :LdapObject/manager-object
+                                                 :description "LDAP object of the 'manager' attribute"
+                                                 }
                                  :mobile {:type String}
                                  :name {:type String}
                                  :member {:type (list String)}
                                  :memberObjects {:type (list :LdapObject)
-                                                 :resolve :LdapObject/member-objects}
+                                                 :resolve :LdapObject/member-objects
+                                                 :description "LDAP objects of the 'member' attribute. Could be groups"}
+                                 :membersFlatList {:type (list :LdapObject)
+                                                   :resolve :LdapObject/members-flat-list
+                                                   :description "Flat list of user members. Show their member users instead of nested groups"
+                                                   }
                                  :memberOf {:type (list String)}
                                  :memberOfObjects {:type (list :LdapObject)
-                                                   :resolve :LdapObject/member-of-objects}
+                                                   :resolve :LdapObject/member-of-objects
+                                                   :description "LDAP objects of the group the user/group belongs to"}
                                  :objectCategory {:type String}
                                  :objectClass {:type (list String)}
                                  :objectSid {:type String}
                                  :operatingSystem {:type String}
                                  :operatingSystemVersion {:type String}
                                  :pwdLastSet {:type String}
-                                 :pwdLastSetDays {:type Int :resolve :LdapObject/pwd-last-set-days}
-                                 :pwdLastSetDate {:type String :resolve :LdapObject/pwd-last-set-date}
+                                 :pwdLastSetDays {:type Int
+                                                  :resolve :LdapObject/pwd-last-set-days
+                                                  :description "How many days ago was the password set?"}
+                                 :pwdLastSetDate {:type String
+                                                  :resolve :LdapObject/pwd-last-set-date
+                                                  description "The date when the password set?"}
                                  :sAMAccountName {:type String}
                                  :sAMAccountType {:type String}
                                  :sn {:type String}
@@ -48,7 +62,8 @@
                                  :whenCreated {:type String}
                                  }}}
 
- :queries {:ldap_objects {:type (list :LdapObject)
+ :queries {:ldap_objects {:description "Search for LDAP objects"
+                          :type (list :LdapObject)
                           :args {:system {:type String}
                                  :searchdn {:type String}
                                  :filter {:type String}}

@@ -91,6 +91,18 @@
       (backend/get-objects-by-dn backend
                                  system
                                  (:memberOf value)))))
+
+(defn ldap-object-members-flat-list
+  [backend]
+  (fn [context _args value]
+    (let [
+          {:keys [::system ::searchdn]} context
+          filter (str "(&(objectclass=user)(memberOf:1.2.840.113556.1.4.1941:=" (:distinguishedName value) "))")
+          ]
+      (backend/search-objects backend
+                               system
+                               filter
+                               searchdn))))
 (defn query-ldap-objects
   [backend]
   (fn [context args value]
@@ -102,7 +114,9 @@
                                filter
                                searchdn)
        ;; https://lacinia.readthedocs.io/en/latest/resolve/context.html
-       (resolve/with-context {::system system}))
+       (resolve/with-context {::system system
+                              ::searchdn  searchdn
+                              }))
 
     )))
 
@@ -117,6 +131,7 @@
      :LdapObject/pwd-last-set-date (ldap-object-pwd-last-set-date backend)
      :LdapObject/member-objects (ldap-object-member-objects backend)
      :LdapObject/member-of-objects (ldap-object-member-of-objects backend)
+     :LdapObject/members-flat-list (ldap-object-members-flat-list backend)
      :LdapObject/manager-object (ldap-object-manager-object backend)
      :query/ldap-objects (query-ldap-objects backend)
      }
