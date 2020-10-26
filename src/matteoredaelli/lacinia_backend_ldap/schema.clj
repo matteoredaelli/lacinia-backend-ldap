@@ -92,7 +92,7 @@
                                  system
                                  (:memberOf value)))))
 
-(defn ldap-object-members-flat-list
+(defn ldap-object-members-flat-objects
   [backend]
   (fn [context _args value]
     (let [
@@ -103,6 +103,21 @@
                                system
                                filter
                                searchdn))))
+
+(defn ldap-object-member-of-flat-objects
+  [backend]
+  (fn [context _args value]
+    (let [
+          {:keys [::system ::searchdn]} context
+          filter (str "(member:1.2.840.113556.1.4.1941:=" (:distinguishedName value) ")")
+          ]
+      (backend/search-objects backend
+                               system
+                               filter
+                               searchdn))))
+
+
+
 (defn query-ldap-objects
   [backend]
   (fn [context args value]
@@ -117,8 +132,24 @@
        (resolve/with-context {::system system
                               ::searchdn  searchdn
                               }))
-
     )))
+
+
+(defn query-ldap-empty-groups
+  [backend]
+  (fn [context args value]
+    (let [
+          {:keys [system searchdn filter]} args]
+      (->
+       (backend/search-objects backend
+                               system
+                               "(&(objectClass=group)(!(member=*)))"
+                               searchdn)
+       ;; https://lacinia.readthedocs.io/en/latest/resolve/context.html
+       (resolve/with-context {::system system
+                              ::searchdn  searchdn
+                              }))
+      )))
 
 (defn resolver-map
   [component]
@@ -131,8 +162,10 @@
      :LdapObject/pwd-last-set-date (ldap-object-pwd-last-set-date backend)
      :LdapObject/member-objects (ldap-object-member-objects backend)
      :LdapObject/member-of-objects (ldap-object-member-of-objects backend)
-     :LdapObject/members-flat-list (ldap-object-members-flat-list backend)
+     :LdapObject/member-of-flat-objects (ldap-object-member-of-flat-objects backend)
+     :LdapObject/members-flat-objects (ldap-object-members-flat-objects backend)
      :LdapObject/manager-object (ldap-object-manager-object backend)
+     :query/ldap-empty-groups (query-ldap-empty-groups backend)
      :query/ldap-objects (query-ldap-objects backend)
      }
     ))

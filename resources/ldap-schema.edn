@@ -33,14 +33,17 @@
                                  :memberObjects {:type (list :LdapObject)
                                                  :resolve :LdapObject/member-objects
                                                  :description "LDAP objects of the 'member' attribute. Could be groups"}
-                                 :membersFlatList {:type (list :LdapObject)
-                                                   :resolve :LdapObject/members-flat-list
-                                                   :description "Flat list of user members. Show their member users instead of nested groups"
-                                                   }
+                                 :membersFlatObjects {:type (list :LdapObject)
+                                                      :resolve :LdapObject/members-flat-objects
+                                                      :description "Flat list of user members. Show their member users instead of nested groups"
+                                                      }
                                  :memberOf {:type (list String)}
                                  :memberOfObjects {:type (list :LdapObject)
                                                    :resolve :LdapObject/member-of-objects
                                                    :description "LDAP objects of the group the user/group belongs to"}
+                                 :memberOfFlatObjects {:type (list :LdapObject)
+                                                   :resolve :LdapObject/member-of-flat-objects
+                                                   :description "LDAP groups a user/group belongs to"}
                                  :objectCategory {:type String}
                                  :objectClass {:type (list String)}
                                  :objectSid {:type String}
@@ -62,7 +65,14 @@
                                  :whenCreated {:type String}
                                  }}}
 
- :queries {:ldap_objects {:description "Search for LDAP objects"
+ :queries {:ldap_empty_groups {:description "Search empty groups"
+                               :type (list :LdapObject)
+                               :args {:system {:type String}
+                                      :searchdn {:type String}
+                                      }
+                               :resolve :query/ldap-empty-groups}
+
+           :ldap_objects {:description "Search for LDAP objects"
                           :type (list :LdapObject)
                           :args {:system {:type String}
                                  :searchdn {:type String}
