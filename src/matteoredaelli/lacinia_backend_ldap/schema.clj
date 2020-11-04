@@ -9,10 +9,18 @@
     [com.stuartsierra.component :as component]
     [matteoredaelli.lacinia-backend-ldap.backend :as backend]))
 
+(defn get-ip-address
+  [dns-name]
+  (try
+     (.getHostAddress dns-name)
+     (catch Exception e "")))
+
 (defn get-ip-addresses
   [host]
-  (let [addresses (InetAddress/getAllByName host)]
-    (map #(.getHostAddress %) addresses)))
+  (try
+    (let [addresses (InetAddress/getAllByName host)]
+      (map get-ip-address addresses))
+    (catch Exception e [])))
 
 (defn filedate-to-unixtime
   [filedate]

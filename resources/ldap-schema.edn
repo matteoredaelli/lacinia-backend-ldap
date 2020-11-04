@@ -1,6 +1,6 @@
 {
  :objects {:LdapObject {:description "LDAP object: can be an user, group, computer,.."
-                        :fields {:dn {:type String}
+                        :fields {:dn {:type ID}
                                  :accountExpires {:type String}
                                  :c {:type String}
                                  :cn {:type String}
