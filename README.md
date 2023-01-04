@@ -19,8 +19,8 @@ Run the project directly:
 
 Build a deployable jar of this library:
 
-	$ clojure -A:jar -M:jar
-	$ clojure -A:uberjar -M:uberjar  ;; (it will include lib dependencies
+    $ clojure -X:uberjar :jar lacinia-backend-ldap.jar
+    $ java -cp lacinia-backend-ldap.jar clojure.main -m matteoredaelli.lacinia-backend-ldap
 
 Install it locally:
 

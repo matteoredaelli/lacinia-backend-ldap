@@ -1,10 +1,10 @@
 {:paths ["src" "resources"]
- :deps {org.clojure/clojure {:mvn/version "1.10.1"}
-        com.walmartlabs/lacinia {:mvn/version "0.38.0-alpha-3"}
-        com.walmartlabs/lacinia-pedestal {:mvn/version "0.15.0-alpha-2"}
-        io.aviso/logging {:mvn/version "0.3.1"}
-        com.stuartsierra/component {:mvn/version "0.3.2"}
-        org.clojars.pntblnk/clj-ldap {:mvn/version "0.0.16"}
+ :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        com.walmartlabs/lacinia {:mvn/version "1.2-alpha-4"}
+        com.walmartlabs/lacinia-pedestal {:mvn/version "1.1"}
+        io.aviso/logging {:mvn/version "1.0"}
+        com.stuartsierra/component {:mvn/version "1.1.0"}
+        org.clojars.pntblnk/clj-ldap {:mvn/version "0.0.17"}
         }
  :aliases
  {:test {:extra-paths ["test"]
@@ -15,15 +15,13 @@
                  :sha "f7ef16dc3b8332b0d77bc0274578ad5270fbfedd"}}
    :main-opts ["-m" "cognitect.test-runner"
                "-d" "test"]}
-  :jar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.104"}}
-        :main-opts ["-m" "hf.depstar.jar" "lacinia-backend-ldap.jar"]}
-  :install {:extra-deps {deps-deploy/deps-deploy {:mvn/version "0.0.9"}}
-            :main-opts ["-m" "deps-deploy.deps-deploy" "install" "lacinia-backend-ldap.jar"]}
-  :deploy {:extra-deps {deps-deploy/deps-deploy {:mvn/version "0.0.9"}}
-           :main-opts ["-m" "deps-deploy.deps-deploy" "deploy" "lacinia-backend-ldap.jar"]}
-  :uberjar {:extra-deps {seancorfield/depstar {:mvn/version "1.1.104"}}
-            :main-opts ["-m" "hf.depstar.uberjar" "lacinia-backend-ldap-with-deps.jar"
-                        "-C" "-m" "matteoredaelli.lacinia-backend-ldap"]}
-
+  ;; build an uberjar (application) with AOT compilation by default:
+  :uberjar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.1.303"}}
+            :exec-fn hf.depstar/uberjar
+            :exec-args {:aot true}}
+  ;; build a jar (library):
+  :jar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.1.303"}}
+        :exec-fn hf.depstar/jar
+        :exec-args {}}
 
   }}
