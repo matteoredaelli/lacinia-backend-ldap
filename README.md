@@ -22,13 +22,18 @@ Build a deployable jar of this library:
     $ clojure -X:uberjar :jar lacinia-backend-ldap.jar
     $ java -cp lacinia-backend-ldap.jar clojure.main -m matteoredaelli.lacinia-backend-ldap
 
+or
+
+    $ clojure -X:uberjar :jar lacinia-backend-ldap.jar  :main-class matteoredaelli.lacinia-backend-ldap
+    $ java -jar lacinia-backend-ldap.jar clojure.main
+	
 Install it locally:
 
-	$ clojure -A:install -M:install
+	$ clojure -A:install -M:install   (old way, tobe updated)
 
 Deploy it to Clojars -- needs `CLOJARS_USERNAME` and `CLOJARS_PASSWORD` environment variables:
 
-	$ clojure -A:deploy -M:deploy
+	$ clojure -A:deploy -M:deploy  (old way, tobe updated)
 
 ## ROADMAP
 
